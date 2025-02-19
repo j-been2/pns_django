@@ -136,48 +136,35 @@ def delete(request):
             model_type = received_data.get("modelType")
             item_id = received_data.get("itemId")
             print(model_type, item_id)
+
             if model_type == "PnsBigo":
                 item = get_object_or_404(PnsBigo, id=item_id)
                 item.de = 'Y'  # 특정 필드만 변경
                 item.save(update_fields=['de'])  # 'de' 필드만 업데이트
-
                 return JsonResponse({"status": "success", "data": "삭제 되었습니다."})
 
-            # elif model_type == "PnsModel":
-            #     item = get_object_or_404(PnsModel, id=item_id)
-            #     update_data = {data["key"]: data["value"] for data in updates}
-            #     form = PnsModelForm(update_data, instance=item)
-            #     if form.is_valid():
-            #         form.save()
-            #         return JsonResponse({"status": "success", "data": "수정 되었습니다."})
-            #     else:
-            #         return JsonResponse({"status": "error", "message": "검증 실패", "errors": form.errors})
-
-            # elif model_type == "PnsCombi":
-            #     item = get_object_or_404(PnsCombi, id=item_id)
-            #     update_data = {data["key"]: data["value"] for data in updates}
-            #     form = PnsCombiForm(update_data, instance=item)
-            #     if form.is_valid():
-            #         form.save()
-            #         return JsonResponse({"status": "success", "data": "수정 되었습니다."})
-            #     else:
-            #         return JsonResponse({"status": "error", "message": "검증 실패", "errors": form.errors})
-
-            # elif model_type == "PnsManager":
-            #     item = get_object_or_404(PnsManager, id=item_id)
-            #     update_data = {data["key"]: data["value"] for data in updates}
-            #     form = PnsManagerForm(update_data, instance=item)
-            #     if form.is_valid():
-            #         form.save()
-            #         return JsonResponse({"status": "success", "data": "수정 되었습니다."})
-            #     else:
-            #         return JsonResponse({"status": "error", "message": "검증 실패", "errors": form.errors})
-
-            # Response로 응답
-            return JsonResponse({'returnCode': 'OK', 'message': '', 'data': '수정 되었습니다.'})
+            elif model_type == "PnsModel":
+                item = get_object_or_404(PnsModel, id=item_id)
+                item.de = 'Y'
+                item.save(update_fields=['de'])
+                return JsonResponse({"status": "success", "data": "삭제 되었습니다."})
+            
+            elif model_type == "PnsCombi":
+                item = get_object_or_404(PnsCombi, id=item_id)
+                item.de = 'Y'
+                item.save(update_fields=['de'])
+                return JsonResponse({"status": "success", "data": "삭제 되었습니다."})
+            
+            elif model_type == "PnsManager":
+                item = get_object_or_404(PnsManager, id=item_id)
+                item.de = 'Y'
+                item.save(update_fields=['de'])
+                return JsonResponse({"status": "success", "data": "삭제 되었습니다."})
+            else:
+                return JsonResponse({"status": "success", "data": ""})
+            
 
         except Exception as e:
-            print(e)
             # 잘못된 토큰 (로그아웃/만료)
             if str(e) == "token is unauthorized.":
                 return JsonResponse({'returnCode': 'NG', 'message': ''}, status=401)
@@ -190,45 +177,55 @@ def delete(request):
 
 
 
+def add_item(request):
+    if request.method in ['GET', 'POST']:
+        try:
+            # if (isAuthorized(request) == False):
+            #     raise AuthError("token is unauthorized.")
 
-# 데이터 추가
-def add_item(request, model_type):
-    if model_type == "bigo":
-        form = PnsBigoForm(request.POST or None)
-    elif model_type == "model":
-        form = PnsModelForm(request.POST or None)
-    elif model_type == "combi":
-        form = PnsCombiForm(request.POST or None)
-    elif model_type == "manager":
-        form = PnsManagerForm(request.POST or None)
+            received_data = json.loads(request.body.decode("utf-8"))
+            # if 'id' not in received_data:
+            #     raise Exception(
+            #         '[id] key does not exist in your parameters.')
+            
+
+            model_type = received_data.get("modelType")
+            updates = received_data.get("arr", [])
+
+            print(model_type, updates)
+
+            if model_type == "PnsBigo":
+                update_data = {data["key"]: data["value"] for data in updates}
+                update_data['de'] = 'N'
+                new_item = PnsBigo.objects.create(**update_data)  
+                return JsonResponse({"status": "success", "data": "추가가 되었습니다."})
+
+            elif model_type == "PnsModel":
+                update_data = {data["key"]: data["value"] for data in updates}
+                update_data['de'] = 'N'
+                new_item = PnsModel.objects.create(**update_data)  
+                return JsonResponse({"status": "success", "data": "추가가 되었습니다."})
+            
+            elif model_type == "PnsCombi":
+                update_data = {data["key"]: data["value"] for data in updates}
+                update_data['de'] = 'N'
+                new_item = PnsCombi.objects.create(**update_data)  
+                return JsonResponse({"status": "success", "data": "추가가 되었습니다."})
+            
+            elif model_type == "PnsManager":
+                update_data = {data["key"]: data["value"] for data in updates}
+                update_data['de'] = 'N'
+                new_item = PnsManager.objects.create(**update_data)  
+                return JsonResponse({"status": "success", "data": "추가가 되었습니다."})
+            else:
+                return JsonResponse({"status": "success", "data": ""})
+    
+        except Exception as e:
+            # 잘못된 토큰 (로그아웃/만료)
+            if str(e) == "token is unauthorized.":
+                return JsonResponse({'returnCode': 'NG', 'message': ''}, status=401)
+
+            return JsonResponse({'returnCode': 'NG', 'message': ''})
     else:
-        return redirect('admin_page')
+        return JsonResponse({'returnCode': 'NG', 'message': ''}, status=405)
 
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        return redirect('admin_page')
-
-    return render(request, 'add_item.html', {'form': form})
-
-
-
-
-
-# 데이터 삭제
-def delete_item(request, model_type, item_id):
-    if model_type == "bigo":
-        item = get_object_or_404(PnsBigo, id=item_id)
-    elif model_type == "model":
-        item = get_object_or_404(PnsModel, id=item_id)
-    elif model_type == "combi":
-        item = get_object_or_404(PnsCombi, id=item_id)
-    elif model_type == "manager":
-        item = get_object_or_404(PnsManager, id=item_id)
-    else:
-        return redirect('admin_page')
-
-    if request.method == "POST":
-        item.delete()
-        return redirect('admin_page')
-
-    return render(request, 'delete_confirm.html', {'item': item})

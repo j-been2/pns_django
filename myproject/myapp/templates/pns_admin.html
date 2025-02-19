@@ -71,7 +71,7 @@
             <thead>
                 <tr>
                     {% for field in model.fields %}
-                        {% if field != 'id' %}
+                        {% if field != 'id' and field != 'de' %}
                         <th>{{ field }}</th>
                         {% endif %}
                     {% endfor %}
@@ -80,11 +80,34 @@
                 </tr>
             </thead>
             <tbody>
+                 <!-- 추가 -->
+                <tr>
+                    {% for field in model.fields %}
+                        {% if field != 'id' and field != 'de' %}
+                        <td class="newable" data-model ="{{ model.name }}" data-field="{{ field }}">
+                            {% if field == 'content' %}
+                            <textarea type="text" name="${field}" class="form-control" row="4"
+                            style="height:170px"></textarea>
+                            {% else %}
+                            <input type="text" name="${field}" value="" class="form-control" />
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                    {% endfor %}
+                     <td>
+                         <button class="btn btn-primary add-btn" type="button">추가</button>
+                     </td>
+                    <td>
+                    &nbsp;
+                    </td>
+
+                </tr>
+                <!-- 기존 -->
                 {% for obj in model.data %}
                     <tr id="row_{{ obj.id }}"  data-item-id="{{ obj.id }}" data-item-model="{{ model.name }}">
 
                         {% for field in model.fields %}
-                            {% if field != 'id' %}
+                            {% if field != 'id' and field != 'de' %}
                             <td class="editable" data-field="{{ field }}" data-id="{{ obj.id }}">
                                 {{ obj|get_item:field|linebreaksbr  }}
                             </td>
@@ -99,6 +122,9 @@
                         </td>
                     </tr>
                 {% endfor %}
+
+
+
             </tbody>
         </table>
         </div>
@@ -124,6 +150,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const editButtons = document.querySelectorAll('.edit-btn');
         const delButtons = document.querySelectorAll('.del-btn');
+        const addButtons = document.querySelectorAll('.add-btn');
 
 
         editButtons.forEach((button) => {
@@ -154,7 +181,6 @@
                     });
                     // 수정 버튼을 '저장'으로 변경
                     button.textContent = '저장';
-                    console.log(modelType, itemId);
                 }
                 else{
                     //저장하기
@@ -247,21 +273,64 @@
                         const { data } = xhr;
                         getServerData = data;
                         alert(xhr.data);
-                        //window.location.reload();
+                        window.location.reload();
+                    },
+                    error: function (xhr) {
+                        /* console.log(`error!!!` , xhr);
+                        if (xhr.statusText === "Unauthorized" || xhr.status === 401) {
+                            alert(`로그인을 먼저 수행하시기 바랍니다.`);
+                            // index 페이지로 이동
+                            window.location.replace("/");
+                            return;
+                        }
+                        if (xhr.status == 502 || xhr.status == 503 || xhr.status == 504) {
+                            window.location.replace("/502");
+                            return;
+                        }*/
+                    },
+                    complete: function (xhr) {
+                        console.log(`complete!!!`);
+                    }
+                });
+                }
+            });
+        });
 
-                        /*cells.forEach(cell => {
-                            var field = cell.dataset.field;
-                            var newValue = arr.find(item => item.key === field)?.value || "";
 
-                            if (field === "content") {
-                                newValue = newValue.replace(/\n/g, "<br>");  // 줄바꿈 처리
-                            }
+        
+        
+        addButtons.forEach((button) => {
+            button.addEventListener('click', function () {
+                const row = button.closest('tr');  
+                const cells = row.querySelectorAll('.newable');
 
-                            cell.innerHTML = newValue;
-                        });
+                var modelType;  // 모델 타입 ('bigo', 'model' 등)
 
-                        // 버튼을 "수정"으로 변경
-                        button.textContent = '수정';*/
+                //저장하기
+                var arr = [];
+                cells.forEach(cell => {
+                    modelType = cell.dataset.model;
+                    var field = cell.dataset.field;
+                    var input = cell.querySelector("input, textarea");
+                    var value = input ? input.value.trim() : cell.textContent.trim();
+
+                    arr.push({'key': field, 'value' :value})
+                });
+                
+                $.ajax({
+                    url: `/add`,
+                    method: "POST",
+                    /*beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                    },*/
+                    headers: { "X-CSRFToken": getCSRFToken() },
+                    contentType: "application/json",
+                    data: JSON.stringify({ modelType, arr}),
+                    success: function (xhr) {
+                        const { data } = xhr;
+                        getServerData = data;
+                        alert(xhr.data);
+                        window.location.reload();
 
 
                     },
@@ -283,13 +352,8 @@
                     }
                 });
 
-                }
-
-
-                
             });
         });
-
 
 
     });
