@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 class PnsBigo(models.Model):
+    de = models.CharField(max_length=10, default='N')
     type = models.CharField(max_length=100) #모바일, 소상공인, 유무선
     content = models.TextField()
 
@@ -14,6 +15,7 @@ class PnsBigo(models.Model):
     
 
 class PnsModel(models.Model):
+    de = models.CharField(max_length=10, default='N')
     type = models.CharField(max_length=100) #모바일, 소상공인
     type1 = models.IntegerField(blank=True, null=True) 
     name = models.CharField(max_length=100)  # 모델명
@@ -32,6 +34,7 @@ class PnsModel(models.Model):
     
 
 class PnsCombi(models.Model):
+    de = models.CharField(max_length=10, default='N')
     type = models.CharField(max_length=100) #MIT, IT
     name = models.CharField(max_length=100)  # 모델명
     price = models.IntegerField()  # 월요금금
@@ -53,6 +56,7 @@ class PnsCombi(models.Model):
         return self.type
     
 class PnsManager(models.Model):
+    de = models.CharField(max_length=10, default='N')
     type = models.CharField(max_length=50) #일반or 소상공인인
     jisa = models.CharField(max_length=50)
     agency_name = models.CharField(max_length=100)  # 대리점명명
