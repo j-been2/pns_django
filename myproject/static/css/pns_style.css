@@ -1,0 +1,583 @@
+/* 기본 스타일 */
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    text-align: center;
+    font-family: 'GmarketSansMedium', sans-serif;
+
+
+}
+
+.highlight {
+    color: red;
+    font-weight: bold;
+}
+
+.container {
+    width: 75%;
+    display: inline-block;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    font-family: 'GmarketSansMedium', sans-serif;
+    font-size: 17px;
+}
+input{
+    padding: 10px 20px;
+    margin: 5px;
+    border: 1px solid rgb(109, 109, 109);
+    cursor: pointer;
+    font-family: 'GmarketSansMedium', sans-serif;
+    font-size: 17px;
+}
+nav button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    font-family: 'GmarketSansMedium', sans-serif;
+    font-size: 17px;
+}
+
+.active {
+    background-color: red;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+
+}
+
+.tab-content:not(.hidden) {
+    display: block;
+}
+
+.circle {
+    display: inline-flex;
+    width: 70px;
+    height: 70px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: gray;
+    color: white;
+    font-size: 0.8rem;
+    margin: 10px;
+    cursor: pointer;
+}
+
+
+.category {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+}
+
+.itembox {
+    height: 100%;
+    width: 25%;
+    /* 2 items per row */
+    padding: 10px;
+    box-sizing: border-box;
+    color: #000;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.itembox:hover {
+    transform: scale(1.05);
+    /* Slightly enlarges the box */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Adds a soft shadow */
+    background-color: rgba(0, 0, 0, 0.05);
+    /* Light background change */
+}
+
+.itembox:active {
+    transform: scale(0.95);
+    /* Slightly shrinks on click to give press effect */
+}
+
+.itemtext {
+    margin-bottom: 15px;
+    font-size: 17px;
+}
+
+
+.u_itembox {
+    height: 100%;
+    width: 50%;
+    padding: 8px;
+    box-sizing: border-box;
+    color: #000;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+
+
+.fit-picture {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    /* Maintain a fixed aspect ratio (1:1) */
+    object-fit: contain;
+    /* Ensure image fits within the box */
+}
+
+.model-name {
+    font-size: 1.25vw;
+    padding-bottom: 3px;
+    color: #1f1d1d;
+    border-bottom: 2px solid #b8b8b8;
+}
+
+
+
+.red {
+    background-color: red;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    z-index: 1000;
+
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+/* 탭 상단 버튼 스타일 */
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid #f44336;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s;
+
+    display: flex; /* flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    white-space: nowrap;
+    max-width: 110px;
+
+}
+
+.tab-button.active {
+    background-color: #f44336;
+    color: white;
+}
+
+/* 탭 내용 박스 스타일 */
+.ptab-content {
+    display: none;
+    padding: 0px 0px;
+    background-color: white;
+    /* border: 1px solid #ccc; */
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+.ptab-content.active {
+    display: block;
+}
+
+
+
+#popupPolicy {
+    color: rgb(16, 20, 255);
+}
+
+.price-box {
+    background-color: #f5f5f5;
+    text-align: left;
+    border-radius: 5px;
+
+    padding: 0.8vw 1.5vw;
+    font-size: 1.2vw;
+
+}
+
+.price-box div {
+    margin-bottom: 1.5px;
+}
+
+.label {
+    color: black;
+    font-weight: normal;
+}
+
+
+.price {
+    color: black;
+    font-weight: bold;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.blue {
+    color: blue;
+}
+
+.bigo {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+    background-color: antiquewhite;
+    margin-bottom: 4px;
+
+}
+
+.bigo2 {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(233, 243, 189);
+
+}
+
+.title{
+    padding: 10px;
+    display: inline-block;
+    white-space: nowrap;
+    font-size:clamp(25px, 2vw, 35px);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* 반투명 검은색 */
+    z-index: 999;
+    /* 팝업보다 낮게 설정 */
+    display: none;
+    /* 기본적으로 숨김 */
+}
+
+/* 팝업이 나타날 때 오버레이 보이기 */
+.overlay.active {
+    display: block;
+}
+
+
+.font-resize {
+    font-size: 1vw;
+}
+
+
+
+.so_itembox {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    width: 100%;
+}
+
+.so_fit-picture {
+    width: 25%;
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+    padding: 5px;
+    min-width: 85px;
+}
+
+.so_fit {
+    width: 25%;
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+    padding: 5px;
+    min-width: 85px;
+    display: flex;                /* flexbox로 설정 */
+    flex-direction: column;       /* 자식 요소들을 세로로 정렬 */
+    justify-content: center;      /* 수직으로 중앙 정렬 */
+    align-items: center;          /* 가로로 중앙 정렬 */
+
+}
+
+.so_fit a {
+    text-decoration: none;
+}
+
+
+.so_fit .blue{
+    font-size: 1.25vw;
+    border-bottom: 2px solid #0000ff;
+    margin: 5px 0px;
+}
+
+
+
+.small-button {
+    padding: 5px;  /* 버튼 안의 여백 설정 */
+    background-color: #f0f0f0;  /* 회색 배경 */
+    color: #333;  /* 텍스트 색상 어두운 회색 */
+    border: 1px solid #ccc;  /* 버튼의 테두리 추가 */
+    border-radius: 3px;  /* 버튼 테두리 둥글게 */
+    cursor: pointer;  /* 커서를 포인터로 변경 */
+}
+
+.small-button:hover {
+    background-color: #e0e0e0;  /* 버튼에 마우스 올리면 색 변경 */
+}
+
+
+.so_price {
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.so_price .type{
+    text-align: center;
+}
+
+
+.bg-moonbeam-gray {
+    background-color: #c0c0c0; /* 문빔 그레이 색상 */
+    background-image: linear-gradient(180deg, #c0c0c0 10%, #e0e0e0 100%);
+    background-size: cover;
+}
+
+
+/* 아이템들을 감싸는 컨테이너 */
+.item-container {
+    margin: 5px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;  /* 아이템이 2개 이상일 때 자동으로 줄바꿈 */
+}
+
+/* 각 아이템 스타일 */
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex:1;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.item-img-box {
+    width: 53px;
+    height: 53px;
+    border-radius: 15%;  /* 둥글게 만들기 */
+    background: #9beeee;
+    margin-bottom: 5px;
+    
+}
+
+
+.item-img-box img{
+    width:100%;
+    height:100%;
+    object-fit: contain;
+} 
+
+.item-text {
+    font-size: 15px;
+    font-weight: bold;
+    color: #696969;
+}
+
+/* "요금제" 텍스트 스타일 */
+.item-subtext {
+    font-size: 13px;
+    color: #b90202;
+    white-space: nowrap;
+}
+
+/* "+" 구분 기호 스타일 */
+.separator {
+    font-size: 25px;
+    color: #333;
+    margin-right: 10px;  /* 구분 기호 간격 */
+}
+
+
+
+@media (max-width: 1200px) {
+    .container {
+        width: 100%;
+        display: inline-block;
+    }
+
+    .u_itembox {
+        width: 100%;
+        padding: 8px 0px;
+    }
+
+    .price-box {
+        font-size: 1.4vw;
+    }
+
+    .font-resize {
+        font-size: 1.5vw;
+    }
+    .model-name {
+        font-size: 1.5vw;
+    }
+
+    .so_fit .blue{
+        font-size: 1.7vw;
+    }
+
+}
+
+
+        
+
+@media (max-width: 991px) {
+    .container {
+        width: 100%;
+        display: inline-block;
+    }
+
+    .itembox {
+        width: 50%;
+        /* 4 items per row */
+        padding: 10px;
+        box-sizing: border-box;
+        padding-bottom: 25px;
+    }
+
+    .u_itembox {
+        width: 100%;
+        padding: 8px 0px;
+    }
+
+
+    .price-box {
+        font-size: 2.5vw;
+    }
+
+    .font-resize {
+        font-size: 2.5vw;
+    }
+    .model-name {
+        font-size: 2.6vw;
+    }
+
+    .so_fit .blue{
+        font-size: 2.9vw;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+        display: inline-block;
+    }
+
+    .itembox {
+        width: 50%;
+        /* 4 items per row */
+        padding: 10px;
+        box-sizing: border-box;
+        padding-bottom: 20px;
+    }
+
+    .u_itembox {
+        width: 100%;
+        padding: 8px 0px;
+    }
+        
+
+    .popup {
+        width: 80%;
+    }
+
+    .tab-button {
+        font-size: small;
+        padding: 10px 12px;
+    }
+
+    .price-box {
+        font-size: 3.0vw;
+        min-height: 60px;
+        padding: 1.5vw 2.5vw;
+    }
+
+    .font-resize {
+        font-size: 3.2vw;
+    }
+    .model-name {
+        font-size: 3.8vw;
+        max-height: 23px;
+        white-space: nowrap;
+    }
+
+    .ptab-content{
+        padding: 1px;
+    }
+
+    .so_fit .blue{
+        font-size: 4vw;
+    }
+
+}

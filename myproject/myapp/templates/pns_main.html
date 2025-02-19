@@ -1,0 +1,350 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>대구/경북 원샷브릿지 2.0</title>
+
+    <!-- Custom fonts for this template-->
+
+    <link rel="stylesheet" href="/static/css/pns_style.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/img/pns.ico" />
+
+    <!-- Custom styles for this template-->
+    <!-- {% comment %} <link href="/static/css/sb-admin-2.min.css" rel="stylesheet"> {% endcomment %}
+    {% comment %} <link href="/static/css/custom.css" rel="stylesheet"> {% endcomment %} -->
+    <link href="/static/css/pns_style.css" rel="stylesheet">
+    
+    <style>
+        #captcha-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 70%;
+        }
+
+    </style>
+
+</head>
+
+<body class="" style="background-color:#FFF">
+
+    <header>
+        <div class="title"><span class="highlight">대구/경북</span> 원샷브릿지 <span class="highlight">2.0</span></div>
+
+        
+        <nav id="navSection">
+            <button id="productTab" onclick="showSection('product')">상품소개</button>
+            <button id="inquiryTab" onclick="showSection('inquiry')">문의/접수처</button>
+        </nav>
+    </header>
+
+
+    <main class="container">
+
+        <section id="product" class="tab-content hidden">
+        <div class="tab-buttons">
+            <div class="tab-button" onclick="showTab(1)">모바일 상품</div>
+            <div class="tab-button" onclick="showTab(2)">유무선 결합</div>
+            <div class="tab-button" onclick="showTab(3)">소상공인</div>
+        </div>
+
+        <div id="tab1" class="ptab-content">
+            
+            {% for bigo in bigolist %}
+                {% if bigo.type == "모바일" %}
+                <div class="bigo">
+                    {% for line in bigo.content.splitlines %}
+                        <span class="label font-resize">{{ line }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+
+            <div class="category">
+
+                {% for mobile in pns_mobile %}
+                <div class="itembox">
+                    <img class="fit-picture" src="{{ mobile.image_url }}" alt="" />
+                    <div class="model-name">{{ mobile.name }}</div>
+                    <div class="price-box">
+                        <div><span class="label">출고가:</span> 
+                        <span class="price bold f1">{{ mobile.price}}</span>원
+                        {% if mobile.price_info %}
+                        <span class="price bold">{{ mobile.price_info}}</span>
+                        {% endif %}
+                        </div>
+                        <div><span class="label">원샷 지원금:</span> 
+                        <span class="price bold blue f1">{{ mobile.oneshot_price}}</span>원
+                        {% if mobile.oneshot_info %}
+                        <span class="price bold">{{ mobile.oneshot_info}}</span>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+
+
+        <!-- 유무선결합 -->
+        <div id="tab2" class="ptab-content">
+
+            
+            {% for bigo in bigolist %}
+                {% if bigo.type == "유무선" %}
+                <div class="bigo">
+                    {% for line in bigo.content.splitlines %}
+                        <span class="label font-resize">{{ line }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endfor %}
+
+
+            <div class="category">
+
+                {% for combi in pns_combi %}
+                <div class="u_itembox">
+                    <div class="model-name">{{ combi.name }} </div>
+
+                    
+                    <div class="item-container">
+                        {% if combi.type == 'MIT' %}
+                        <div class="item">
+                            <div class="item-img-box"><img src="/static/img/mobile.png" alt="" /></div>
+                            <div class="item-text">모바일</div>
+                            <div class="item-subtext">{% if combi.m_charge_info %}{{combi.m_charge_info}}{% else %}&nbsp;{% endif %}</div>
+                        </div>
+                        <span class="separator">+</span>
+                        {% endif %}
+                        
+                        <div class="item">
+                            <div class="item-img-box"><img src="/static/img/internet.png" alt="" /></div>
+                            <div class="item-text">인터넷</div>
+                            <div class="item-subtext">{{combi.i_charge_info}}</div>
+                        </div>
+                        <span class="separator">+</span>
+                        
+                        <div class="item">
+                            <div class="item-img-box"><img src="/static/img/tv.png" alt="" /></div>
+                            <div class="item-text">TV</div>
+                            <div class="item-subtext">{{combi.t_charge_info}}</div>
+                        </div>
+                    </div>
+
+                    <div class="price-box">
+                        <div><span class="label">• 유선요금:</span> <span class="price bold f1">{{combi.price}}</span>원 
+                        {% if combi.price_info %}{{combi.price_info}}{% endif %}</div>
+                        <div><span class="label">• 원샷 지원금:</span> <span class="price bold blue f2">{{combi.oneshot_price}}</span>원 
+                        {% if combi.oneshot_info %}{{combi.oneshot_info}}{% endif %}</div>
+                        {% if combi.bigo %}
+                        <div><span class="label" style="color:#7f0c0c">{{ combi.bigo }}</span></div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+
+
+
+
+            </div>
+        </div>
+
+        <!-- 소상공인 -->
+        <div id="tab3" class="ptab-content">
+
+            
+            {% for bigo in bigolist %}
+                {% if bigo.type == "소상공인" %}
+                <div class="bigo">
+                    {% for line in bigo.content.splitlines %}
+                        <span class="label font-resize">{{ line }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endfor %}
+
+
+            <div class="category">
+
+                {% for so in pns_sosang %}
+                <div class="u_itembox">
+                    <div class="model-name">{{ so.name}} </div>
+                    <div class="so_itembox">
+                        <img class="so_fit-picture" src="{{so.image_url}}" alt="" />
+                        <div class="so_price price-box">
+                            <div><span class="label">• 요금:</span> <span class="price bold f1">{{so.price}}</span>원 
+                            {% if so.price_info %}
+                            {{so.price_info}}
+                            {% endif %}
+                            </div>
+                            <div><span class="label">• 원샷 지원금:</span> <span class="price bold blue f2">{{so.oneshot_price}}</span>원
+                            {% if so.oneshot_info %}
+                            {{so.oneshot_info}}
+                            {% endif %}</div>
+                            <div><span class="label">• 요금제기준:</span>
+                            {% if so.charge_info %}
+                            <span class="price bold">{{so.charge_info}}</span>
+                            {% endif %}
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+
+        </section>
+
+
+        <!-- 문의/접수처 -->
+        <section id="inquiry" class="tab-content hidden">
+
+            <div id="tab1" class="ptab-content" style="display:block;">
+                {% for bigo in bigolist %}
+                    {% if bigo.type == "문의" %}
+                    <div class="bigo">
+                        {% for line in bigo.content.splitlines %}
+                            <span class="label font-resize">{{ line }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            
+
+                <div class="bigo2">
+                <span class="label font-resize">일반고객 (모바일/인터넷/TV 등)</span>
+                </div>
+
+                <div class="category">
+
+                    {% for m in manager1 %}
+                    <div class="u_itembox">
+                        <div class="model-name">{{ m.jisa}} / {{m.agency_name}}</div>
+                        <div class="so_itembox">
+                            <div class="so_fit">
+                                <span><a href="{{m.link_url}}" target="_blank"><span class="blue price bold">바로가기</span></a></span>
+                                <span><button class="small-button font-resize" onclick="copy('{{m.link_url}}')">링크복사</button></span>
+                            </div>
+                            <div class="so_price price-box">
+                                <table>
+                                    {% if m.kc_manager_name %}
+                                    <tr>
+                                        <td class="label type">담당자</td>
+                                        <td class="label">{{m.kc_manager_name}}</td>
+                                        <td class="phone">{{m.kc_manager_phone}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if m.kt_manager_name1 %}
+                                    <tr>
+                                        <td class="label type">KT</td>
+                                        <td class="label">{{m.kt_manager_name1}}</td>
+                                        <td class="phone">{{m.kt_manager_phone1}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if m.kt_manager_name2 %}
+                                    <tr>
+                                        <td class="label type">KT</td>
+                                        <td class="label">{{m.kt_manager_name2}}</td>
+                                        <td class="phone">{{m.kt_manager_phone2}}</td>
+                                    </tr>
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="bigo2">
+                <span class="label font-resize">소상공인 (로봇/하이오더/AI전화)</span>
+                </div>
+
+                <div class="category">
+                    {% for m in manager2 %}
+                    <div class="u_itembox">
+                        <div class="model-name">{{ m.jisa}} / {{m.agency_name}}</div>
+                        <div class="so_itembox">
+                            <div class="so_fit">
+                                <span><a href="{{m.link_url}}" target="_blank"><span class="blue price bold">바로가기</span></a></span>
+                                <span><button class="small-button font-resize" onclick="copy('{{m.link_url}}')">링크복사</button></span>
+                            </div>
+                            <div class="so_price price-box">
+                                <table>
+                                    {% if m.kc_manager_name %}
+                                    <tr>
+                                        <td class="label type">담당자</td>
+                                        <td class="label">{{m.kc_manager_name}}</td>
+                                        <td class="phone">{{m.kc_manager_phone}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if m.kt_manager_name1 %}
+                                    <tr>
+                                        <td class="label type">KT</td>
+                                        <td class="label">{{m.kt_manager_name1}}</td>
+                                        <td class="phone">{{m.kt_manager_phone1}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if m.kt_manager_name2 %}
+                                    <tr>
+                                        <td class="label type">KT</td>
+                                        <td class="label">{{m.kt_manager_name2}}</td>
+                                        <td class="phone">{{m.kt_manager_phone2}}</td>
+                                    </tr>
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+
+
+        </section>
+    </main>
+
+
+    <div id="popup" class="popup hidden">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2 id="popupTitle"></h2>
+            <!-- <p><strong>모델명:</strong> <span id="popupModel"></span></p> -->
+            <p><strong>출고가: </strong> <span id="popupRealPrice"></span></p>
+            <p><strong>P&S 지원금: </strong> <span id="popupPolicy"></span></p>
+            <p><strong>할부원금: </strong> <span id="popupPrice"></span></p>
+            <p><strong>※ 요금제 & 부가서비스 사용 조건 있음</strong></p>
+        </div>
+    </div>
+    
+
+    <script src="/static/js/pns_script.js"></script>
+
+
+</body>
+
+</html>
